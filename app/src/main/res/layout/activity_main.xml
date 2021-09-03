@@ -21,9 +21,26 @@
         android:id="@+id/findSearchNewsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="124dp"
+        android:layout_marginBottom="354dp"
         android:text="Search News" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="322dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="107dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="Enter a topic" />
 
 
 </RelativeLayout>
