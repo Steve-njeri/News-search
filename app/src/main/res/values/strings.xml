@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">News search</string>
+    <string name="app_name">NEWS SEARCH</string>
+    <string name="search_news">Search news</string>
 </resources>
