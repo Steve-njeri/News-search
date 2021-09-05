@@ -11,9 +11,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewsActivity extends AppCompatActivity {
-    private TextView mNewsTextView;
-    private ListView mListView;
+    @BindView(R.id.newsTextView) TextView mNewsTextView;
+    @BindView(R.id.listView) ListView mListView;
     private String[] news = new String[] {
             "Anti-Abortion Whistleblowing Site Gets New Home With Provider Known for Hosting Extremists - The Daily Beast",
             "Biden promised ISIS-K will 'pay.' Having no US troops in Afghanistan makes that harder - CNN",
@@ -30,6 +33,7 @@ public class NewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+        ButterKnife.bind(this);
 
         mListView = (ListView) findViewById(R.id.listView);
         mNewsTextView = (TextView) findViewById(R.id.newsTextView);
