@@ -4,20 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class NewsActivity extends AppCompatActivity {
-    private TextView mNewsTextView;
-
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        mNewsTextView = (TextView) findViewById(R.id.newsEditText);
 
-        Intent intent = getIntent();
-        String news = intent.getStringExtra("news");
-        mNewsTextView.setText("Here are all the latest news: " + news);
+        mListView = (ListView) findViewById(R.id.listView);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, news);
+        mListView.setAdapter(adapter);
     }
 }
