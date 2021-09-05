@@ -12,6 +12,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_700"
         android:text="Latest news " />
 
     <ListView

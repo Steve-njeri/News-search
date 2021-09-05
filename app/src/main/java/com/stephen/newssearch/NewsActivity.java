@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,6 +46,7 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String news = ((TextView)view).getText().toString();
+                Log.v("NewsActivity", "In the onItemClickListener!");
                 Toast.makeText(NewsActivity.this, news, Toast.LENGTH_LONG).show();
             }
         });
@@ -52,5 +54,6 @@ public class NewsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String news = intent.getStringExtra("news");
         mNewsTextView.setText("Here are all the latest news: " + news);
+        Log.d("NewsActivity", "In the onCreate method!");
     }
 }

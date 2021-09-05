@@ -6,15 +6,15 @@
 
 
     <TextView
+        android:id="@+id/appNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Popular News"
-        android:layout_marginTop="35dp"
-        android:id="@+id/appNameTextView"
-        android:textColor="@color/purple_700"
-        android:textSize="40sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="Popular News"
+        android:textColor="@color/purple_700"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     <Button
@@ -39,9 +39,9 @@
         android:layout_marginTop="107dp"
         android:background="@color/secondaryText"
         android:ems="10"
+        android:hint="Enter news topic"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:padding="5dp"
-        android:text="Enter news topic" />
+        android:padding="5dp" />
 
 </RelativeLayout>
