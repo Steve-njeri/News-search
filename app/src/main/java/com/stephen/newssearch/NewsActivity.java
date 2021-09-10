@@ -15,7 +15,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.newsTextView) TextView mNewsTextView;
     @BindView(R.id.listView) ListView mListView;
     private String[] news = new String[] {
@@ -42,18 +42,16 @@ public class NewsActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, news);
         mListView.setAdapter(adapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String news = ((TextView)view).getText().toString();
-                Log.v("NewsActivity", "In the onItemClickListener!");
-                Toast.makeText(NewsActivity.this, news, Toast.LENGTH_LONG).show();
-            }
-        });
+        mListView.setOnItemClickListener(this);
 
         Intent intent = getIntent();
         String news = intent.getStringExtra("news");
         mNewsTextView.setText("Here are all the latest news: " + news);
         Log.d("NewsActivity", "In the onCreate method!");
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
