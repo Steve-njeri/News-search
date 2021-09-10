@@ -7,28 +7,34 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
-    public static final String TAG = MainActivity.class.getSimpleName();
-    private Button mFindSearchNewsButton;
-    private EditText mNewsEditText;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    @BindView(R.id.findSearchNewsButton) Button mFindSearchNewsButton;
+    @BindView(R.id.newsEditText) EditText mNewsEditText;
+    @BindView(R.id.appNameTextView) TextView mAppNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mNewsEditText = (EditText) findViewById(R.id.newsEditText);
-        mFindSearchNewsButton = (Button) findViewById(R.id.findSearchNewsButton);
-        mFindSearchNewsButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                String news = mNewsEditText.getText().toString();
-                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
-                intent.putExtra("news", news);
-                startActivity(intent);
-            }
-        });
+        ButterKnife.bind(this);
+
+        mFindSearchNewsButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v){
+        if (v == mFindSearchNewsButton) {
+            String location = mNewsEditText.getText().toString();
+            Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+            intent.putExtra("location", location);
+            startActivity(intent);
+        }
+
     }
 }
