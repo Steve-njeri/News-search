@@ -36,13 +36,18 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
 
-        mListView = (ListView) findViewById(R.id.listView);
-        mNewsTextView = (TextView) findViewById(R.id.newsTextView);
-
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, news);
         mListView.setAdapter(adapter);
 
-        mListView.setOnItemClickListener(this);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String news = ((TextView)view).getText().toString();
+                Log.v("NewsActivity", "In the onItemClickListener!");
+                Toast.makeText(NewsActivity.this, news, Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         Intent intent = getIntent();
         String news = intent.getStringExtra("news");
@@ -52,6 +57,8 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        Intent intent = new Intent(NewsActivity.this, MainActivity.class);
+        startActivity(intent);
 
     }
 }
