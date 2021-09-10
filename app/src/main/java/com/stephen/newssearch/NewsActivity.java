@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
 
 public class NewsActivity extends AppCompatActivity implements View.OnClickListener{
     @BindView(R.id.newsTextView) TextView mNewsTextView;
@@ -53,6 +54,9 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
         String news = intent.getStringExtra("news");
         mNewsTextView.setText("Here are all the latest news: " + news);
         Log.d("NewsActivity", "In the onCreate method!");
+
+        Api client = NewsClient.getClient();
+        Call<NewsSearchResponse> call = client.getNews(news, "news");
     }
 
     @Override
