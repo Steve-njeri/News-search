@@ -1,7 +1,7 @@
-package com.stephen.newssearch;
+package com.stephen.newssearch.network;
 
-import static com.stephen.newssearch.Constants.API_KEY;
 import static com.stephen.newssearch.Constants.BASE_URL;
+
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NewsClient {
     private static Retrofit retrofit = null;
 
-    public static Api getClient() {
+    public static NewsApi getClient() {
 
         if (retrofit == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -23,7 +23,6 @@ public class NewsClient {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request newRequest  = chain.request().newBuilder()
-                                    .addHeader("Authorization", API_KEY)
                                     .build();
                             return chain.proceed(newRequest);
                         }
@@ -37,6 +36,6 @@ public class NewsClient {
                     .build();
         }
 
-        return retrofit.create(Api.class);
+        return retrofit.create(NewsApi.class);
     }
 }
