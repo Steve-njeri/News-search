@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -52,11 +53,10 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
         mArticle = Parcels.unwrap(getArguments().getParcelable("article"));
-
     }
 
     @Override
@@ -70,7 +70,7 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
 
         mNameLabel.setText(mArticle.getName());
         mAuthor.setText(mArticle.getAuthor());
-        mTitle.setText(mArticle.getTitle());
+        mTitle.setText(mArticle.getTitle().toString());
         mPublishedAt.setText(mArticle.getPublishedAt());
         mDescription.setText(mArticle.getDescription());
 
@@ -85,6 +85,5 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
             Intent webIntent = new Intent (Intent.ACTION_VIEW, Uri.parse(mArticle.getUrl()));
             startActivity(webIntent);
         }
-
     }
 }

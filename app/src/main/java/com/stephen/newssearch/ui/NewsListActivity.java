@@ -33,6 +33,7 @@ import java.util.List;
 public class NewsListActivity extends AppCompatActivity {
     private static final String TAG = NewsListActivity.class.getSimpleName();
     private NewsListAdapter mAdapter;
+
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
@@ -49,14 +50,14 @@ public class NewsListActivity extends AppCompatActivity {
         String source = intent.getStringExtra("source");
 
         NewsApi client = NewsClient.getClient();
-
         Call<NewsSearchResponse> call = client.getTopHeadlines(source, API_KEY);
 
         call.enqueue(new Callback<NewsSearchResponse>() {
-
             @Override
             public void onResponse(Call<NewsSearchResponse> call, Response<NewsSearchResponse> response) {
+
                 hideProgressBar();
+
                 if (response.isSuccessful()) {
                     articles = response.body().getArticles();
                     mAdapter = new NewsListAdapter(articles, NewsListActivity.this);

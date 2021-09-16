@@ -5,22 +5,22 @@ import android.widget.ArrayAdapter;
 
 public class MyNewsArrayAdapter extends ArrayAdapter {
     private Context mContext;
-    private String[] mNews;
+    private String[] mArticles;
 
-    public MyNewsArrayAdapter(Context mContext, int resource, String[] mNews) {
+    public MyNewsArrayAdapter(Context mContext, int resource, String[] mArticles) {
         super(mContext, resource);
         this.mContext = mContext;
-        this.mNews = mNews;
+        this.mArticles = mArticles;
     }
 
     @Override
     public Object getItem(int position) {
-        String news = mNews[position];
-        return String.format(news);
+        String article = mArticles[position];
+        return String.format("%s \nServes great: %s", article);
     }
 
     @Override
     public int getCount() {
-        return mNews.length;
+        return mArticles.length;
     }
 }
