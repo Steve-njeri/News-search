@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import retrofit2.Response;
 
 import android.widget.ProgressBar;
 
+import com.stephen.newssearch.Constants;
 import com.stephen.newssearch.R;
 import com.stephen.newssearch.adapters.NewsListAdapter;
 import com.stephen.newssearch.models.Article;
@@ -31,6 +34,10 @@ import java.util.List;
 
 
 public class NewsListActivity extends AppCompatActivity {
+    private SharedPreferences mSharedPreferences;
+    private String mRecentAddress;
+
+
     private static final String TAG = NewsListActivity.class.getSimpleName();
     private NewsListAdapter mAdapter;
 
@@ -81,6 +88,9 @@ public class NewsListActivity extends AppCompatActivity {
             }
 
         });
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_Q_KEY, null);
 
     }
     private void showFailureMessage() {
