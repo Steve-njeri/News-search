@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 import android.content.Intent;
 import android.widget.TextView;
 
+import com.stephen.newssearch.ui.MainActivity;
+import com.stephen.newssearch.ui.NewsListActivity;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +37,7 @@ public class MainActivityTest {
     @Test
     public void secondActivityStarted(){
         activity.findViewById(R.id.findSearchNewsButton).performClick();
-        Intent expectedIntent = new Intent(activity, NewsActivity.class);
+        Intent expectedIntent = new Intent(activity, NewsListActivity.class);
         ShadowActivity shadowActivity = org.robolectric.Shadows.shadowOf(activity);
         Intent actualIntent = shadowActivity.getNextStartedActivity();
         assertTrue(actualIntent.filterEquals(expectedIntent));

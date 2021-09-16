@@ -15,22 +15,24 @@ import android.view.View;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.stephen.newssearch.ui.NewsListActivity;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class NewsActivityInstrumentationTest {
     @Rule
-    public ActivityScenarioRule<NewsActivity> activityTestRule =
-            new ActivityScenarioRule<>(NewsActivity.class);
+    public ActivityScenarioRule<NewsListActivity> activityTestRule =
+            new ActivityScenarioRule<>(NewsListActivity.class);
 
     private View activityDecorView;
 
     @Before
     public void setUp() {
-        activityTestRule.getScenario().onActivity(new ActivityScenario.ActivityAction<NewsActivity>() {
+        activityTestRule.getScenario().onActivity(new ActivityScenario.ActivityAction<NewsListActivity>() {
             @Override
-            public void perform(NewsActivity activity) {
+            public void perform(NewsListActivity activity) {
                 activityDecorView = activity.getWindow().getDecorView();
             }
         });
@@ -40,7 +42,7 @@ public class NewsActivityInstrumentationTest {
     public void listItemClickDisplaysToastWithCorrectRestaurant() {
         String newsName = "Anti-Abortion Whistleblowing Site Gets New Home With Provider Known for Hosting Extremists - The Daily Beast";
         onData(anything())
-                .inAdapterView(withId(R.id.listView))
+                .inAdapterView(withId(R.id.recyclerView))
                 .atPosition(0)
                 .perform(click());
         onView(withText(newsName)).inRoot(withDecorView(not(activityDecorView)))
