@@ -14,7 +14,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewsClient {
     private static Retrofit retrofit = null;
+
     public static NewsApi getClient() {
+
         if (retrofit == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new Interceptor() {
@@ -26,12 +28,14 @@ public class NewsClient {
                         }
                     })
                     .build();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
+
         return retrofit.create(NewsApi.class);
     }
 }

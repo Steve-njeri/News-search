@@ -18,8 +18,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences.Editor mEditor;
+//    private SharedPreferences mSharedPreferences;
+//    private SharedPreferences.Editor mEditor;
 
 
     @BindView(R.id.findSearchNewsButton) Button mFindSearchNewsButton;
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mSharedPreferences.edit();
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        mEditor = mSharedPreferences.edit();
 
         mFindSearchNewsButton.setOnClickListener(this);
     }
@@ -42,14 +42,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         if (v == mFindSearchNewsButton) {
             String source = mSourceEditText.getText().toString();
-            addToSharedPreferences(source);
+//            addToSharedPreferences(source);
             Intent intent = new Intent(MainActivity.this, NewsListActivity.class);
             intent.putExtra("source", source);
             startActivity(intent);
         }
     }
 
-    private void addToSharedPreferences(String q) {
-        mEditor.putString(Constants.PREFERENCES_Q_KEY, q).apply();
-    }
+//    private void addToSharedPreferences(String q) {
+//        mEditor.putString(Constants.PREFERENCES_Q_KEY, q).apply();
+//    }
 }
