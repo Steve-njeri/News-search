@@ -96,7 +96,7 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
                     .getInstance()
                     .getReference(Constants.FIREBASE_CHILD_NEWS);
             newsRef.push().setValue(mArticle);
-            Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
         }
     }
 }
