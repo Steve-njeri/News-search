@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.findSearchNewsButton) Button mFindSearchNewsButton;
     @BindView(R.id.sourceEditText) EditText mSourceEditText;
     @BindView(R.id.appNameTextView) TextView mAppNameTextView;
+    @BindView(R.id.savedNewsButton) Button mSavedNewsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        mEditor = mSharedPreferences.edit();
 
         mFindSearchNewsButton.setOnClickListener(this);
+        mSavedNewsButton.setOnClickListener(this);
     }
 
     @Override
@@ -83,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            }
             Intent intent = new Intent(MainActivity.this, NewsListActivity.class);
             intent.putExtra("source", source);
+            startActivity(intent);
+        }
+
+        if (v == mSavedNewsButton) {
+            Intent intent = new Intent(MainActivity.this, SavedNewsListActivity.class);
             startActivity(intent);
         }
 
