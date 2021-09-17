@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         if (v == mFindSearchNewsButton) {
             String source = mSourceEditText.getText().toString();
-            addToSharedPreferences(source);
+            if(!(source).equals("")) {
+                addToSharedPreferences(source);
+            }
             Intent intent = new Intent(MainActivity.this, NewsListActivity.class);
             intent.putExtra("source", source);
             startActivity(intent);

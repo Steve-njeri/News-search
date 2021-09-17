@@ -89,7 +89,8 @@ public class NewsListActivity extends AppCompatActivity {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mRecentNews  = mSharedPreferences.getString(Constants.PREFERENCES_SOURCE_KEY, null);
-        Log.d("Shared Pref Source", mRecentNews);
+
+        String q = mRecentNews;
 
     }
     private void showFailureMessage() {
