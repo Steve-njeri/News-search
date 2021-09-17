@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         if (v == mFindSearchNewsButton) {
             String source = mSourceEditText.getText().toString();
+
+            saveSourceToFirebase(source);
+
 //            if(!(source).equals("")) {
 //                addToSharedPreferences(source);
 //            }
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void saveSourceToFirebase(String source) {
-        mSearchedSourceReference.setValue(source);
+        mSearchedSourceReference.push().setValue(source);
     }
 
 //    private void addToSharedPreferences(String source) {
