@@ -34,8 +34,8 @@ import java.util.List;
 
 
 public class NewsListActivity extends AppCompatActivity {
-    private SharedPreferences mSharedPreferences;
-    private String mRecentNews;
+//    private SharedPreferences mSharedPreferences;
+//    private String mRecentNews;
 
     private static final String TAG = NewsListActivity.class.getSimpleName();
     private NewsListAdapter mAdapter;
@@ -87,10 +87,10 @@ public class NewsListActivity extends AppCompatActivity {
 
         });
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mRecentNews  = mSharedPreferences.getString(Constants.PREFERENCES_SOURCE_KEY, null);
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        mRecentNews  = mSharedPreferences.getString(Constants.PREFERENCES_SOURCE_KEY, null);
 
-        String q = mRecentNews;
+        String q = intent.getStringExtra("source");
 
     }
     private void showFailureMessage() {
