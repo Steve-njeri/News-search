@@ -54,7 +54,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     public class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.newsImageView) ImageView mNewsImageView;
         @BindView(R.id.newsNameTextView) TextView mNameTextView;
-        @BindView(R.id.author)TextView mAuthor;
         @BindView(R.id.title) TextView mTitle;
         @BindView(R.id.publishedAt) TextView mPublishedAt;
 
@@ -71,7 +70,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         public void bindArticles(Article article){
             mNameTextView.setText(article.getName());
             Picasso.get().load(article.getUrlToImage()).into(mNewsImageView);
-            mAuthor.setText(article.getAuthor());
             mTitle.setText(article.getTitle());
             mPublishedAt.setText(article.getPublishedAt());
         }
