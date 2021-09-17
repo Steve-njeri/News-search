@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private ValueEventListener mSearchedSourceReferenceListener;
     private DatabaseReference mSearchedSourceReference;
 
 //    private SharedPreferences mSharedPreferences;
@@ -91,7 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSearchedSourceReference.push().setValue(source);
     }
 
-//    private void addToSharedPreferences(String source) {
-//        mEditor.putString(Constants.PREFERENCES_SOURCE_KEY, source).apply();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSearchedSourceReference.removeEventListener(mSearchedSourceReferenceListener);
+    }
 }
