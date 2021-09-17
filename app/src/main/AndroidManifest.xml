@@ -13,6 +13,9 @@
         android:theme="@style/Theme.NewsSearch"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.SavedNewsListActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.NewsDetailActivity"
             android:exported="true" />
         <activity
