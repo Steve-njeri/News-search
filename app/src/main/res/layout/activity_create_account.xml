@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.CreateAccountActivity"
-    android:background="@color/colorPrimary">
+    android:background="@drawable/create_account_bg">
 
     <LinearLayout
         android:orientation="vertical"
@@ -104,5 +104,22 @@
         android:textStyle="bold"
         android:layout_above="@+id/linearLayout"
         android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        android:id="@+id/firebaseProgressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/loadingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/firebaseProgressBar"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_margin="20dp"
+        android:visibility="gone" />
 
 </RelativeLayout>
