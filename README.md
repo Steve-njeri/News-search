@@ -34,7 +34,7 @@ The app will enable users to view news details.
 * The project is currently not being maintained any more. Contributions are most welcome if you would like to add more modules to the project, you can reach me through my Contacts below.
 
 ### License
-* This project is protected under [MIT License](LICENSE)*
+* This project is protected under [LICENSE](LICENSE)*
 
 Copyright (c) 2021 **STEPHEN NJERI**
 
