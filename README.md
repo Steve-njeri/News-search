@@ -1,10 +1,8 @@
 # News Search Application
 #### September 6th 2021
 #### By **Stephen Njeri**
-![](screenshots/photo1.jpg)
-![](screenshots/photo2.jpg)
-![](screenshots/photo3.jpg)
-![](screenshots/photo4.jpg)
+![1](screenshots/photo1.jpg), ![2](screenshots/photo2.jpg)
+![3](screenshots/photo3.jpg), ![]4(screenshots/photo4.jpg)
 
 
 
