@@ -12,25 +12,25 @@ import com.stephen.newssearch.ui.NewsDetailFragment;
 import java.util.List;
 
 public class NewsPagerAdapter extends FragmentPagerAdapter {
-    private List<Article> mArticle;
+    private List<Article> mArticles;
 
     public NewsPagerAdapter(@NonNull FragmentManager fm, int behavior, List<Article> articles) {
         super(fm, behavior);
-        mArticle = articles;
+        mArticles = articles;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return NewsDetailFragment.newInstance(mArticle.get(position));
+        return NewsDetailFragment.newInstance(mArticles.get(position));
     }
 
     @Override
     public int getCount() {
-        return mArticle.size();
+        return mArticles.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mArticle.get(position).getName();
+        return mArticles.get(position).getTitle();
     }
 }

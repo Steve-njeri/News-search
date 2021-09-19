@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,8 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+import com.stephen.newssearch.Constants;
 import com.stephen.newssearch.R;
 import com.stephen.newssearch.models.Article;
 
@@ -52,11 +59,10 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
         mArticle = Parcels.unwrap(getArguments().getParcelable("article"));
-
     }
 
     @Override
@@ -70,11 +76,12 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
 
         mNameLabel.setText(mArticle.getName());
         mAuthor.setText(mArticle.getAuthor());
-        mTitle.setText(mArticle.getTitle());
+        mTitle.setText(mArticle.getTitle().toString());
         mPublishedAt.setText(mArticle.getPublishedAt());
         mDescription.setText(mArticle.getDescription());
 
         mNewsUrl.setOnClickListener(this);
+        mSaveNewsButton.setOnClickListener(this);
 
         return view;
     }
@@ -86,5 +93,28 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
             startActivity(webIntent);
         }
 
+        if (v == mSaveNewsButton) {
+            DatabaseReference newsRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(Constants.FIREBASE_CHILD_NEWS);
+            newsRef.push().setValue(mArticle);
+            Toast.makeText(getContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
+        }
+
+        if (v == mSaveNewsButton) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+            DatabaseReference newsRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(Constants.FIREBASE_CHILD_NEWS)
+                    .child(uid);
+
+            DatabaseReference pushRef = newsRef.push();
+            String pushId = pushRef.getKey();
+            mArticle.setPushId(pushId);
+            pushRef.setValue(mArticle);
+
+            Toast.makeText(getContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
+        }
     }
 }
