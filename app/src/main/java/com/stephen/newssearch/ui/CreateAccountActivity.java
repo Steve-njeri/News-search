@@ -32,22 +32,14 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    @BindView(R.id.createUserButton)
-    Button mCreateUserButton;
-    @BindView(R.id.nameEditText)
-    EditText mNameEditText;
-    @BindView(R.id.emailEditText)
-    EditText mEmailEditText;
-    @BindView(R.id.passwordEditText)
-    EditText mPasswordEditText;
-    @BindView(R.id.confirmPasswordEditText)
-    EditText mConfirmPasswordEditText;
-    @BindView(R.id.loginTextView)
-    TextView mLoginTextView;
-    @BindView(R.id.firebaseProgressBar)
-    ProgressBar mSignInProgressBar;
-    @BindView(R.id.loadingTextView)
-    TextView mLoadingSignUp;
+    @BindView(R.id.createUserButton) Button mCreateUserButton;
+    @BindView(R.id.nameEditText) EditText mNameEditText;
+    @BindView(R.id.emailEditText) EditText mEmailEditText;
+    @BindView(R.id.passwordEditText) EditText mPasswordEditText;
+    @BindView(R.id.confirmPasswordEditText) EditText mConfirmPasswordEditText;
+    @BindView(R.id.loginTextView) TextView mLoginTextView;
+    @BindView(R.id.firebaseProgressBar) ProgressBar mSignInProgressBar;
+    @BindView(R.id.loadingTextView) TextView mLoadingSignUp;
 
     private String mName;
 
@@ -86,7 +78,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         String password = mPasswordEditText.getText().toString().trim();
         String confirmPassword = mConfirmPasswordEditText.getText().toString().trim();
 
-        boolean validmName = isValidName(mName);
         boolean validEmail = isValidEmail(email);
         boolean validName = isValidName(name);
         boolean validPassword = isValidPassword(password, confirmPassword);
@@ -95,21 +86,20 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         showProgressBar();
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-            hideProgressBar();
-            if (task.isSuccessful()) {
+            if (task.isSuccessful()){
 
                 createFirebaseUserProfile(Objects.requireNonNull(task.getResult().getUser()));
                 Log.d(TAG, "Authentication successful");
-            } else {
-                Toast.makeText(CreateAccountActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(CreateAccountActivity.this,"Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void createAuthStateListener() {
+    private void createAuthStateListener(){
         mAuthListener = firebaseAuth -> {
             final FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
+            if (user != null){
                 Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -119,41 +109,41 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void onStart() {
+    public void onStart(){
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
-    public void onStop() {
+    public void onStop(){
         super.onStop();
-        if (mAuthListener != null) {
+        if(mAuthListener != null){
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
     private boolean isValidEmail(String email) {
         boolean isGoodEmail = (email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches());
-        if (!isGoodEmail) {
+        if(!isGoodEmail){
             mEmailEditText.setError("Please enter a valid email address");
             return false;
         }
         return isGoodEmail;
     }
 
-    private boolean isValidName(String name) {
-        if (name.equals("")) {
+    private boolean isValidName(String name){
+        if(name.equals("")){
             mNameEditText.setError("Please enter your name");
             return false;
         }
         return true;
     }
 
-    private boolean isValidPassword(String password, String confirmPassword) {
-        if (password.length() < 6) {
+    private boolean isValidPassword(String password, String confirmPassword){
+        if(password.length() < 6){
             mPasswordEditText.setError("Please create a password containing at least 6 characters");
             return false;
-        } else if (!password.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)){
             mPasswordEditText.setError("Passwords do not match");
             return false;
         }
@@ -180,6 +170,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        hideProgressBar();
                         if(task.isSuccessful()){
                             Log.d(TAG, Objects.requireNonNull(user.getDisplayName()));
                             Toast.makeText(CreateAccountActivity.this, "The display name has ben set", Toast.LENGTH_LONG).show();

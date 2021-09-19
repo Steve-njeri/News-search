@@ -119,8 +119,11 @@ public class NewsListActivity extends AppCompatActivity {
     }
 
     private void fetchNews(String source){
+
         NewsApi client = NewsClient.getClient();
-        Call<NewsSearchResponse> call = client.getTopHeadlines(articles, "articles");
+
+        Call<NewsSearchResponse> call = client.getTopHeadlines(source, API_KEY);
+
         call.enqueue(new Callback<NewsSearchResponse>() {
             @Override
             public void onResponse(Call<NewsSearchResponse> call, Response<NewsSearchResponse> response) {

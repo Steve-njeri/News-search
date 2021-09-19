@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -96,6 +98,22 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
                     .getInstance()
                     .getReference(Constants.FIREBASE_CHILD_NEWS);
             newsRef.push().setValue(mArticle);
+            Toast.makeText(getContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
+        }
+
+        if (v == mSaveNewsButton) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+            DatabaseReference newsRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(Constants.FIREBASE_CHILD_NEWS)
+                    .child(uid);
+
+            DatabaseReference pushRef = newsRef.push();
+            String pushId = pushRef.getKey();
+            mArticle.setPushId(pushId);
+            pushRef.setValue(mArticle);
+
             Toast.makeText(getContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
         }
     }
