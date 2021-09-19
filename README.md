@@ -1,7 +1,10 @@
 # News Search Application
 #### September 6th 2021
 #### By **Stephen Njeri**
-![](screenshots/picha.jpg)
+![](screenshots/photo1.jpg)
+![](screenshots/photo2.jpg)
+![](screenshots/photo3.jpg)
+![](screenshots/photo4.jpg)
 
 
 
@@ -31,8 +34,11 @@ The app will enable users to view news details.
 1.Launch the project in Android Studio
 
 ```
+### Known bugs
+* The project is currently not being maintained any more. Contributions are most welcome if you would like to add more modules to the project, you can reach me through my Contacts below.
+
 ### License
-*This project is protected under [MIT License](License)*
+* This project is protected under [MIT License](License)*
 
 Copyright (c) 2021 **STEPHEN NJERI**
 
