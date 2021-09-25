@@ -2,6 +2,7 @@ package com.stephen.newssearch.ui;
 
 import static com.stephen.newssearch.Constants.API_KEY;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -26,6 +28,8 @@ import retrofit2.Response;
 
 import android.widget.ProgressBar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.stephen.newssearch.Constants;
 import com.stephen.newssearch.R;
 import com.stephen.newssearch.adapters.NewsListAdapter;
@@ -37,9 +41,11 @@ import com.stephen.newssearch.network.NewsClient;
 import java.util.List;
 
 
-public class NewsListActivity extends AppCompatActivity {
+public class NewsListActivity extends AppCompatActivity implements View.OnClickListener {
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private String mRecentNews;
 
     private static final String TAG = NewsListActivity.class.getSimpleName();
@@ -47,6 +53,7 @@ public class NewsListActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
+    @BindView(R.id.savedNewsButton) Button mSavedNewsButton;
     public List<Article> articles;
 
     @Override
@@ -60,10 +67,26 @@ public class NewsListActivity extends AppCompatActivity {
         if (mRecentNews != null) {
             fetchNews(mRecentNews);
         }
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    getSupportActionBar().setTitle("Welcome, " + user.getDisplayName() + "!");
+                } else {
+
+                }
+            }
+        };
+
+        mSavedNewsButton.setOnClickListener(this);
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         ButterKnife.bind(this);
@@ -88,11 +111,26 @@ public class NewsListActivity extends AppCompatActivity {
             }
         });
 
+
         return true;
     }
 
+    private void logout(){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(NewsListActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id == R.id.action_logout){
+            logout();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -118,7 +156,7 @@ public class NewsListActivity extends AppCompatActivity {
         mEditor.putString(Constants.PREFERENCES_SOURCE_KEY, source).apply();
     }
 
-    private void fetchNews(String source){
+    private void fetchNews(String source) {
 
         NewsApi client = NewsClient.getClient();
 
@@ -146,7 +184,7 @@ public class NewsListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<NewsSearchResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure: ",t );
+                Log.e(TAG, "onFailure: ", t);
                 hideProgressBar();
                 showFailureMessage();
 
@@ -154,4 +192,28 @@ public class NewsListActivity extends AppCompatActivity {
 
         });
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mSavedNewsButton) {
+            Intent intent = new Intent(NewsListActivity.this, SavedNewsListActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
 }

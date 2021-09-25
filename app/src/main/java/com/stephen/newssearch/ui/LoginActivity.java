@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, NewsListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Sorry, your Username or Password is incorrect, Please try again.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

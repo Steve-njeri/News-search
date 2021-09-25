@@ -86,6 +86,7 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+
     @Override
     public void onClick(View v) {
         if (v == mNewsUrl) {

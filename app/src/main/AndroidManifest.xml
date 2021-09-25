@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.stephen.newssearch">
+    package="com.stephen.newssearch" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,35 +11,40 @@
         android:roundIcon="@drawable/img1"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsSearch"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".ui.SavedNewsListActivity"
+            android:exported="true" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.NewsListActivity" />
+        </activity>
         <activity
             android:name=".ui.LoginActivity"
             android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-        <activity
-            android:name=".ui.CreateAccountActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.SavedNewsListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.NewsDetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.NewsListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.CreateAccountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.NewsDetailActivity"
+            android:exported="true" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.NewsListActivity" />
+    </activity>
+
+        <activity
+            android:name=".ui.NewsListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true" >
         </activity>
     </application>
 
