@@ -2,6 +2,7 @@ package com.stephen.newssearch.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,15 +21,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stephen.newssearch.Constants;
 import com.stephen.newssearch.R;
+import com.stephen.newssearch.adapters.FirebaseNewsListAdapter;
 import com.stephen.newssearch.adapters.FirebaseNewsViewHolder;
 import com.stephen.newssearch.models.Article;
+import com.stephen.newssearch.util.OnStartDragListener;
+import com.stephen.newssearch.util.SimpleItemTouchHelperCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SavedNewsListActivity extends AppCompatActivity {
+public class SavedNewsListActivity extends AppCompatActivity implements OnStartDragListener {
     private DatabaseReference mNewsReference;
-    private FirebaseRecyclerAdapter<Article, FirebaseNewsViewHolder> mFirebaseAdapter;
+    private FirebaseNewsListAdapter mFirebaseAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
@@ -40,45 +45,29 @@ public class SavedNewsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_saved_news_list);
         ButterKnife.bind(this);
 
-        mNewsReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_NEWS);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-
-        mNewsReference = FirebaseDatabase
-                .getInstance()
-                .getReference(Constants.FIREBASE_CHILD_NEWS)
-                .child(uid);
-
         setUpFirebaseAdapter();
         hideProgressBar();
         showNews();
     }
 
     private void setUpFirebaseAdapter() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        mNewsReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_NEWS).child(uid);
         FirebaseRecyclerOptions<Article> options =
                 new FirebaseRecyclerOptions.Builder<Article>()
                         .setQuery(mNewsReference, Article.class)
                         .build();
 
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Article, FirebaseNewsViewHolder>(options) {
-
-            @NonNull
-            @Override
-            public FirebaseNewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list_item_drag, parent, false);
-                return new FirebaseNewsViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull FirebaseNewsViewHolder firebaseNewsViewHolder, int position, @NonNull Article article) {
-                firebaseNewsViewHolder.bindNews(article);
-
-            }
-        };
+        mFirebaseAdapter = new FirebaseNewsListAdapter(options, mNewsReference, (OnStartDragListener) this, this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mFirebaseAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFirebaseAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
     }
 
     @Override
@@ -102,5 +91,11 @@ public class SavedNewsListActivity extends AppCompatActivity {
 
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+
     }
 }
