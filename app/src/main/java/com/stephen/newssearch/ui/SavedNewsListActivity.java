@@ -66,7 +66,7 @@ public class SavedNewsListActivity extends AppCompatActivity {
             @NonNull
             @Override
             public FirebaseNewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list_item, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list_item_drag, parent, false);
                 return new FirebaseNewsViewHolder(view);
             }
 
