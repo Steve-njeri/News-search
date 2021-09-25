@@ -39,6 +39,8 @@ public class Article {
 
     private String pushId;
 
+    String index;
+
     /**
      * No args constructor for use in serialization
      * 
@@ -69,6 +71,7 @@ public class Article {
         this.publishedAt = publishedAt;
         this.content = content;
         this.name = name;
+        this.index = "not_specified";
     }
 
     public Source getSource() {
@@ -144,6 +147,14 @@ public class Article {
 
     public void setPushId(String pushId) {
         this.pushId = pushId;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
 
