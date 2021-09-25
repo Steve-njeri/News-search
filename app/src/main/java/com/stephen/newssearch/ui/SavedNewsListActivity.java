@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import com.stephen.newssearch.Constants;
 import com.stephen.newssearch.R;
 import com.stephen.newssearch.adapters.FirebaseNewsListAdapter;
@@ -47,19 +49,24 @@ public class SavedNewsListActivity extends AppCompatActivity implements OnStartD
 
         setUpFirebaseAdapter();
         hideProgressBar();
-        showNews();
+        showRestaurants();
     }
 
     private void setUpFirebaseAdapter() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
-        mNewsReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_NEWS).child(uid);
+
+        Query query = FirebaseDatabase.getInstance()
+                .getReference(Constants.FIREBASE_CHILD_NEWS)
+                .child(uid)
+                .orderByChild(Constants.FIREBASE_QUERY_INDEX);
+
         FirebaseRecyclerOptions<Article> options =
                 new FirebaseRecyclerOptions.Builder<Article>()
-                        .setQuery(mNewsReference, Article.class)
+                        .setQuery(query, Article.class)
                         .build();
 
-        mFirebaseAdapter = new FirebaseNewsListAdapter(options, mNewsReference, (OnStartDragListener) this, this);
+        mFirebaseAdapter = new FirebaseNewsListAdapter(options, query, this, this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mFirebaseAdapter);
@@ -84,18 +91,25 @@ public class SavedNewsListActivity extends AppCompatActivity implements OnStartD
         }
     }
 
-    private void showNews() {
-        mRecyclerView.setVisibility(View.VISIBLE);
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+
     }
 
+    private void showRestaurants() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
 
     private void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
-
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mFirebaseAdapter!= null) {
+            mFirebaseAdapter.stopListening();
+        }
     }
 }

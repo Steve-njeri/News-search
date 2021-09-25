@@ -27,6 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,26 +39,32 @@ import com.stephen.newssearch.models.NewsSearchResponse;
 import com.stephen.newssearch.network.NewsApi;
 import com.stephen.newssearch.network.NewsClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class NewsListActivity extends AppCompatActivity implements View.OnClickListener {
     private SharedPreferences.Editor mEditor;
     private SharedPreferences mSharedPreferences;
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
     private String mRecentNews;
 
     private static final String TAG = NewsListActivity.class.getSimpleName();
     private NewsListAdapter mAdapter;
+
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     @BindView(R.id.errorTextView) TextView mErrorTextView;
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
     @BindView(R.id.savedNewsButton) Button mSavedNewsButton;
-    public List<Article> articles;
+
+    public ArrayList<Article> articles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
@@ -69,13 +76,13 @@ public class NewsListActivity extends AppCompatActivity implements View.OnClickL
         }
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener(){
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
+                if(user != null){
                     getSupportActionBar().setTitle("Welcome, " + user.getDisplayName() + "!");
-                } else {
+                }else {
 
                 }
             }
@@ -95,13 +102,19 @@ public class NewsListActivity extends AppCompatActivity implements View.OnClickL
         mEditor = mSharedPreferences.edit();
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
+        final SearchView searchView = (SearchView) menuItem.getActionView();
 
+        searchView.setQueryHint("Search Latest News...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String source) {
                 addToSharedPreferences(source);
-                fetchNews(source);
+                if (source.length() > 2){
+                    fetchNews(source);;
+                }
+                else {
+                    Toast.makeText(NewsListActivity.this, "Type more than two letters!", Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
 
@@ -111,8 +124,9 @@ public class NewsListActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        menuItem.getIcon().setVisible(false, false);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void logout(){
@@ -158,7 +172,7 @@ public class NewsListActivity extends AppCompatActivity implements View.OnClickL
 
     private void fetchNews(String source) {
 
-        NewsApi client = NewsClient.getClient();
+        final NewsApi client = NewsClient.getClient();
 
         Call<NewsSearchResponse> call = client.getTopHeadlines(source, API_KEY);
 
@@ -168,7 +182,7 @@ public class NewsListActivity extends AppCompatActivity implements View.OnClickL
                 hideProgressBar();
 
                 if (response.isSuccessful()) {
-                    articles = response.body().getArticles();
+                    articles = (ArrayList<Article>) response.body().getArticles();
                     mAdapter = new NewsListAdapter(articles, NewsListActivity.this);
 
                     mRecyclerView.setAdapter(mAdapter);
