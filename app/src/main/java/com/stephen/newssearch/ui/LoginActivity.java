@@ -3,6 +3,7 @@ package com.stephen.newssearch.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,19 +30,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.passwordLoginButton) Button mPasswordLoginButton;
     @BindView(R.id.emailEditText) EditText mEmailEditText;
     @BindView(R.id.passwordEditText) EditText mPasswordEditText;
-    @BindView(R.id.firebaseProgressBar) ProgressBar mSignInProgressBar;
-    @BindView(R.id.loadingTextView) TextView mLoadingSignUp;
+
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ProgressDialog mAuthProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
+
+        mRegisterTextView.setOnClickListener(this);
+        mPasswordLoginButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
 
             @Override
@@ -55,10 +59,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         };
+        createAuthProgressDialog();
+    }
 
-        ButterKnife.bind(this);
-        mPasswordLoginButton.setOnClickListener(this);
-        mRegisterTextView.setOnClickListener(this);
+    private void createAuthProgressDialog(){
+        mAuthProgressDialog = new ProgressDialog(this);
+        mAuthProgressDialog.setTitle("Loading...");
+        mAuthProgressDialog.setMessage("Authenticating with Firebase...");
+        mAuthProgressDialog.setCancelable(false);
     }
 
     @Override
@@ -71,7 +79,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (view == mPasswordLoginButton) {
             loginWithPassword();
-            showProgressBar();
         }
     }
 
@@ -91,7 +98,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        hideProgressBar();
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
@@ -114,16 +120,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-    }
-
-    private void showProgressBar() {
-        mSignInProgressBar.setVisibility(View.VISIBLE);
-        mLoadingSignUp.setVisibility(View.VISIBLE);
-        mLoadingSignUp.setText("Log in you in");
-    }
-
-    private void hideProgressBar() {
-        mSignInProgressBar.setVisibility(View.GONE);
-        mLoadingSignUp.setVisibility(View.GONE);
     }
 }

@@ -19,19 +19,12 @@ import com.stephen.newssearch.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    @BindView(R.id.savedNewsButton) Button mSavedNewsButton;
-    @BindView(R.id.findSearchNewsButton) Button mFindSearchNewsButton;
-    @BindView(R.id.appNameTextView) TextView mAppNameTextView;
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
     }

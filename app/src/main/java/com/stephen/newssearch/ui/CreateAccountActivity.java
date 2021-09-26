@@ -3,6 +3,7 @@ package com.stephen.newssearch.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public static final String TAG = CreateAccountActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ProgressDialog mAuthProgressDialog;
 
     @BindView(R.id.createUserButton) Button mCreateUserButton;
     @BindView(R.id.nameEditText) EditText mNameEditText;
@@ -38,8 +40,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.passwordEditText) EditText mPasswordEditText;
     @BindView(R.id.confirmPasswordEditText) EditText mConfirmPasswordEditText;
     @BindView(R.id.loginTextView) TextView mLoginTextView;
-    @BindView(R.id.firebaseProgressBar) ProgressBar mSignInProgressBar;
-    @BindView(R.id.loadingTextView) TextView mLoadingSignUp;
 
     private String mName;
 
@@ -55,6 +55,14 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         mCreateUserButton.setOnClickListener(this);
 
         createAuthStateListener();
+        createAuthProgressDialog();
+    }
+
+    public void createAuthProgressDialog(){
+        mAuthProgressDialog = new ProgressDialog(this);
+        mAuthProgressDialog.setTitle("Loading...");
+        mAuthProgressDialog.setMessage("Authenticating with Firebase...");
+        mAuthProgressDialog.setCancelable(false);
     }
 
     @Override
@@ -81,9 +89,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         boolean validEmail = isValidEmail(email);
         boolean validName = isValidName(name);
         boolean validPassword = isValidPassword(password, confirmPassword);
+
         if (!validEmail || !validName || !validPassword) return;
 
-        showProgressBar();
+        mAuthProgressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()){
@@ -150,16 +159,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         return true;
     }
 
-    private void showProgressBar() {
-        mSignInProgressBar.setVisibility(View.VISIBLE);
-        mLoadingSignUp.setVisibility(View.VISIBLE);
-        mLoadingSignUp.setText("Sign Up process in Progress");
-    }
-
-    private void hideProgressBar() {
-        mSignInProgressBar.setVisibility(View.GONE);
-        mLoadingSignUp.setVisibility(View.GONE);
-    }
 
     private void createFirebaseUserProfile(final FirebaseUser user){
         UserProfileChangeRequest addProfileName = new UserProfileChangeRequest.Builder()
@@ -170,7 +169,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        hideProgressBar();
                         if(task.isSuccessful()){
                             Log.d(TAG, Objects.requireNonNull(user.getDisplayName()));
                             Toast.makeText(CreateAccountActivity.this, "The display name has ben set", Toast.LENGTH_LONG).show();

@@ -1,70 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".ui.NewsListActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/news" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/appNameTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="16dp"
         android:text="Popular News"
         android:textColor="@color/purple_700"
-        android:textSize="50sp"
+        android:textSize="25dp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/findSearchNewsButton"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/savedNewsButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:background="@color/teal_200"
-        android:text="Search news"
-        android:textColor="@color/colorTextIcons"
-        android:visibility="visible" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/savedNewsButton"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:background="@color/teal_200"
-        android:text="My Saved News"
-        android:textColor="@color/colorTextIcons"
-        android:visibility="visible" />
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/firebaseProgressBar"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/loadingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/firebaseProgressBar"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_margin="20dp"
-        android:visibility="gone" />
+<ProgressBar
+    android:id="@+id/progressBar"
+    style="?android:attr/progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true" />
+
+<TextView
+    android:id="@+id/errorTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_margin="16dp"
+    android:visibility="gone" />
+
+<Button
+    android:id="@+id/savedNewsButton"
+    style="@style/Widget.MaterialComponents.Button.Icon"
+    android:layout_width="300dp"
+    android:layout_height="45dp"
+    android:layout_marginLeft="200dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@color/teal_200"
+    android:text="Saved News"
+    android:textColor="@color/colorTextIcons"
+    android:visibility="visible"
+    app:icon="@drawable/ic_baseline_cloud_done_24" />
 
 </RelativeLayout>

@@ -18,23 +18,24 @@ import com.stephen.newssearch.ui.NewsDetailActivity;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsViewHolder> {
-    private List<Article> mArticles;
+    private ArrayList<Article> mArticles = new ArrayList<>();
     private Context mContext;
 
-    public NewsListAdapter(List<Article> articles, Context context) {
+    public NewsListAdapter(ArrayList<Article> articles, Context context) {
         this.mArticles= articles;
         this.mContext = context;
     }
 
     @NonNull
     @Override
-    public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewsListAdapter.NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_list_item, parent, false);
         NewsViewHolder viewHolder = new NewsViewHolder(view);
         return viewHolder;
@@ -56,7 +57,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         @BindView(R.id.newsNameTextView) TextView mNameTextView;
         @BindView(R.id.title) TextView mTitle;
         @BindView(R.id.publishedAt) TextView mPublishedAt;
-
 
         private Context mContext;
 

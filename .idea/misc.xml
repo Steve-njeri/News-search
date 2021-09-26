@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/create_account_bg.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_back_img.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_baseline_cloud_done_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_facebook.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_google_plus.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
@@ -15,12 +16,14 @@
         <entry key="app/src/main/res/drawable/login_bg.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.16822916666666668" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="app/src/main/res/layout/activity_news.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_news_detail.xml" value="0.16822916666666668" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_news.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_news_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_saved_news.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/activity_saved_news_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_news_detail.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_news_list.xml" value="0.16822916666666668" />
+        <entry key="app/src/main/res/layout/fragment_saved_news_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/news_list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/news_list_item_drag.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.16822916666666668" />

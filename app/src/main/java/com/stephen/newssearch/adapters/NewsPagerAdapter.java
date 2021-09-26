@@ -9,12 +9,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.stephen.newssearch.models.Article;
 import com.stephen.newssearch.ui.NewsDetailFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsPagerAdapter extends FragmentPagerAdapter {
-    private List<Article> mArticles;
+    private ArrayList<Article> mArticles;
 
-    public NewsPagerAdapter(@NonNull FragmentManager fm, int behavior, List<Article> articles) {
+    public NewsPagerAdapter(@NonNull FragmentManager fm, int behavior, ArrayList<Article> articles) {
         super(fm, behavior);
         mArticles = articles;
     }
