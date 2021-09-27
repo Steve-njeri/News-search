@@ -25,6 +25,7 @@ import com.stephen.newssearch.R;
 import com.stephen.newssearch.adapters.NewsListAdapter;
 import com.stephen.newssearch.models.Article;
 import com.stephen.newssearch.services.NewsService;
+import com.stephen.newssearch.util.OnNewsSelectedListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class NewsListFragment extends Fragment {
     private String mRecentAddress;
 
 
+
     public NewsListFragment() {
         // Required empty public constructor
     }
@@ -67,16 +69,15 @@ public class NewsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
         ButterKnife.bind(this, view);
-
         mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_SOURCE_KEY, null);
         if (mRecentAddress != null) {
-            getNews(mRecentAddress);
+            fetchNews(mRecentAddress);
         }
         // Inflate the layout for this fragment
         return view;
     }
 
-    public void getNews(String source){
+    public void fetchNews(String source){
         final NewsService newsService = new NewsService();
         newsService.findNews(source, new Callback() {
             @Override
@@ -92,6 +93,7 @@ public class NewsListFragment extends Fragment {
                     // because fragments do not have own context, and must inherit from corresponding activity.
                     @Override
                     public void run() {
+
                         mAdapter = new NewsListAdapter(articles, getActivity());
                         // Line above states `getActivity()` instead of previous
                         // 'getApplicationContext()' because fragments do not have own context,
@@ -126,7 +128,7 @@ public class NewsListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 addToSharedPreferences(s);
-                getNews(s);
+                fetchNews(s);
                 return false;
             }
 
@@ -135,7 +137,6 @@ public class NewsListFragment extends Fragment {
                 return false;
             }
         });
-        menuItem.getIcon().setVisible(false, false);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

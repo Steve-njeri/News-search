@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -38,190 +39,54 @@ import com.stephen.newssearch.models.Article;
 import com.stephen.newssearch.models.NewsSearchResponse;
 import com.stephen.newssearch.network.NewsApi;
 import com.stephen.newssearch.network.NewsClient;
+import com.stephen.newssearch.util.OnNewsSelectedListener;
+
+import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class NewsListActivity extends AppCompatActivity implements View.OnClickListener {
-    private SharedPreferences.Editor mEditor;
-    private SharedPreferences mSharedPreferences;
-    private String mRecentNews;
-
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private static final String TAG = NewsListActivity.class.getSimpleName();
-    private NewsListAdapter mAdapter;
-    @BindView(R.id.appNameTextView) TextView mAppNameTextView;
-    @BindView(R.id.savedNewsButton) Button mSavedNewsButton;
-    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.errorTextView) TextView mErrorTextView;
-    @BindView(R.id.progressBar) ProgressBar mProgressBar;
-    public List<Article> articles;
+public class NewsListActivity extends AppCompatActivity implements OnNewsSelectedListener {
+    private Integer mPosition;
+    ArrayList<Article> mArticles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_main);
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mRecentNews = mSharedPreferences.getString(Constants.PREFERENCES_SOURCE_KEY, null);
-        if (mRecentNews != null) {
-            fetchNews(mRecentNews);
+        if (savedInstanceState != null){
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
+                mArticles = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_NEWS));
+
+                if (mPosition != null && mArticles != null){
+                    Intent intent = new Intent(this, NewsDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_NEWS, Parcels.wrap(mArticles));
+                    startActivity(intent);
+                }
+            }
         }
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    getSupportActionBar().setTitle("Welcome, " + user.getDisplayName() + "!");
-                } else {
-
-                }
-            }
-        };
-
-        mSavedNewsButton.setOnClickListener(this);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search, menu);
-        ButterKnife.bind(this);
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mSharedPreferences.edit();
-
-        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-
-        searchView.setQueryHint("Search Latest News...");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String source) {
-                addToSharedPreferences(source);
-                if (source.length() > 2){
-                    fetchNews(source);
-                }
-                else {
-                    Toast.makeText(NewsListActivity.this, "Type more than two letters!", Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String source) {
-                return false;
-            }
-        });
-
-        menuItem.getIcon().setVisible(false, false);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.action_logout){
-            logout();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void logout(){
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(NewsListActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (mPosition != null && mArticles != null){
+            outState.putInt(Constants.EXTRA_KEY_POSITION, mPosition);
+            outState.putParcelable(Constants.EXTRA_KEY_NEWS, Parcels.wrap(mArticles));
         }
     }
 
-    private void showFailureMessage() {
-        mErrorTextView.setText("Something went wrong. Please check your Internet connection and try again later");
-        mErrorTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void showUnsuccessfulMessage() {
-        mErrorTextView.setText("Something went wrong. Please try again later");
-        mErrorTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void showNews() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressBar() {
-        mProgressBar.setVisibility(View.GONE);
-    }
-
-    private void addToSharedPreferences(String source) {
-        mEditor.putString(Constants.PREFERENCES_SOURCE_KEY, source).apply();
-    }
-
-    private void fetchNews(String source){
-
-        NewsApi client = NewsClient.getClient();
-
-        Call<NewsSearchResponse> call = client.getTopHeadlines(source, API_KEY);
-
-        call.enqueue(new Callback<NewsSearchResponse>() {
-            @Override
-            public void onResponse(Call<NewsSearchResponse> call, Response<NewsSearchResponse> response) {
-                hideProgressBar();
-
-                if (response.isSuccessful()) {
-                    articles = response.body().getArticles();
-                    mAdapter = new NewsListAdapter((ArrayList<Article>) articles, NewsListActivity.this);
-
-                    mRecyclerView.setAdapter(mAdapter);
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(NewsListActivity.this);
-                    mRecyclerView.setLayoutManager(layoutManager);
-                    mRecyclerView.setHasFixedSize(true);
-
-                    showNews();
-                } else {
-                    showUnsuccessfulMessage();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NewsSearchResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure: ",t );
-                hideProgressBar();
-                showFailureMessage();
-
-            }
-
-        });
-    }
-
     @Override
-    public void onClick(View v){
-        if (v == mSavedNewsButton) {
-            Intent intent = new Intent(NewsListActivity.this, SavedNewsListActivity.class);
-            startActivity(intent);
-        }
+    public void onNewsSelected(Integer position, ArrayList<Article> articles) {
+        mPosition = position;
+        mArticles = articles;
+
     }
 }

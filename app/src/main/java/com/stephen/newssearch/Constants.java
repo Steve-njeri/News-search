@@ -17,5 +17,8 @@ public class Constants {
     //"index" key of our Article objects used for referencing objects during querying
     public static final String FIREBASE_QUERY_INDEX = "index";
 
+    public static final String EXTRA_KEY_POSITION = "position";
+    public static final String EXTRA_KEY_NEWS = "articles";
+
 }
 

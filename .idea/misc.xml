@@ -14,6 +14,11 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_login_hero.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/login_bg.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout-land/activity_news.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/activity_saved_news_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/fragment_news_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-land/news_list_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-land/news_list_item_drag.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -25,7 +30,7 @@
         <entry key="app/src/main/res/layout/fragment_news_list.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/fragment_saved_news_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/news_list_item.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/news_list_item_drag.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/news_list_item_drag.xml" value="0.2" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/menu/menu_search.xml" value="0.1" />

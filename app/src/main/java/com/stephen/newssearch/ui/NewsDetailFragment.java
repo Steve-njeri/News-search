@@ -25,6 +25,8 @@ import com.stephen.newssearch.models.Article;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -44,16 +46,21 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
     @BindView(R.id.saveNewsButton) TextView mSaveNewsButton;
 
     private Article mArticle;
+    private ArrayList<Article> mArticles;
+    private int mPosition;
 
     public NewsDetailFragment() {
         // Required empty public constructor
     }
 
 
-    public static NewsDetailFragment newInstance(Article article) {
+    public static NewsDetailFragment newInstance(ArrayList<Article> articles, Integer position) {
         NewsDetailFragment newsDetailFragment = new NewsDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("article", Parcels.wrap(article));
+
+        args.putParcelable(Constants.EXTRA_KEY_NEWS, Parcels.wrap(articles));
+        args.putInt(Constants.EXTRA_KEY_POSITION, position);
+
         newsDetailFragment.setArguments(args);
         return newsDetailFragment;
     }
@@ -61,8 +68,9 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        assert getArguments() != null;
-        mArticle = Parcels.unwrap(getArguments().getParcelable("article"));
+        mArticles = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_KEY_NEWS));
+        mPosition = getArguments().getInt(Constants.EXTRA_KEY_POSITION);
+        mArticle = mArticles.get(mPosition);
     }
 
     @Override
@@ -92,14 +100,6 @@ public class NewsDetailFragment extends Fragment implements View.OnClickListener
         if (v == mNewsUrl) {
             Intent webIntent = new Intent (Intent.ACTION_VIEW, Uri.parse(mArticle.getUrl()));
             startActivity(webIntent);
-        }
-
-        if (v == mSaveNewsButton) {
-            DatabaseReference newsRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference(Constants.FIREBASE_CHILD_NEWS);
-            newsRef.push().setValue(mArticle);
-            Toast.makeText(getContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
         }
 
         if (v == mSaveNewsButton) {

@@ -27,6 +27,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
+
         ButterKnife.bind(this);
 
         mArticles = Parcels.unwrap(getIntent().getParcelableExtra("articles"));

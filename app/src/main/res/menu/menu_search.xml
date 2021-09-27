@@ -7,7 +7,7 @@
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom"
+        app:showAsAction="collapseActionView|always"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar"/>
 
     <item
